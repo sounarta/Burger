@@ -1,4 +1,5 @@
-import { Iuser } from "@/database/user.model";
+import { IUser} from "@/database/user.model";
+
 
 export interface CreateUserParams {
     clerkId: string;
@@ -10,10 +11,14 @@ export interface CreateUserParams {
 
   export interface UpdateUserParams{
     clerkId:string;
-    updateData:Partial<Iuser>
+    updateData:Partial<IUser>
     path:string
   }
 
   export interface DeleteUserParams{
     clerkId:string
+  }
+
+  export interface GetUserByIdParams{
+    userId:string
   }

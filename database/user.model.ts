@@ -1,7 +1,7 @@
 import { model,models,Document,Schema } from "mongoose";
 
 
-export interface Iuser extends Document{
+export interface IUser extends Document{
 
 clerkId :string ;
     name:string;

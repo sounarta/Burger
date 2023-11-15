@@ -51,6 +51,8 @@ export async function POST(req: Request) {
  
 
   const eventType = evt.type;
+
+  console.log({eventType})
  
 if(eventType === 'user.created'){
 
@@ -61,8 +63,9 @@ if(eventType === 'user.created'){
         clerkId:id,
         name:`${first_name} ${last_name ? `${last_name}`:''}`,
         username:username!,
-        picture:image_url,
         email:email_addresses[0].email_address,
+        picture:image_url,
+        
      })
 
      return NextResponse.json({message:'OK',user:mongoUser})
@@ -72,22 +75,22 @@ if(eventType === 'user.created'){
 
 if(eventType === 'user.updated'){
 
-    const {id,last_name,first_name,email_addresses,username,image_url} = evt.data
+    const{id,username,first_name,last_name,image_url,email_addresses} = evt.data
+    console.log({ id, username, first_name, last_name, image_url, email_addresses });
 
     const mongoUser = await updateUser({
-    
-       clerkId:id,
-       updateData:{
-        name:`${first_name} ${last_name ? `${last_name}`:''}`,
-        username:username!,
-        picture:image_url,
-        email:email_addresses[0].email_address,
-       },
-       path:`/profile/${id}`
-   
+        clerkId:id,
+        updateData:{
+            username:username!,
+            name:`${first_name}${last_name?`${last_name}`:''}`,
+            picture:image_url,
+            email:email_addresses[0].email_address
+        }, 
+        path:`/profile/${id}`
+      
     })
 
-    return NextResponse.json({message:'OK',user:mongoUser})
+    return NextResponse.json({message:'OK',user: mongoUser})
 
 }
 

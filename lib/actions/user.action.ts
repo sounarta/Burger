@@ -4,19 +4,22 @@
 
 import User from "@/database/user.model"
 import { ConnectToDatabase } from "../mongoose"
-import { CreateUserParams, DeleteUserParams, UpdateUserParams } from "./shared.type"
+import { CreateUserParams, DeleteUserParams, GetUserByIdParams, UpdateUserParams } from "./shared.type"
 import Pizza from "@/database/pizza.mode"
 import { revalidatePath } from "next/cache"
 
 
-export async function getUserById(params:any) {
+export async function getUserById(params:GetUserByIdParams) {
 
      
     try {
 
         ConnectToDatabase()
+        const {userId} = params
+      
+        const user = await User.findOne({clerkId:userId})
 
-   
+        return user
         
     } catch (error) {
         console.log(error)
@@ -43,29 +46,26 @@ export async function createUser(DataUser:CreateUserParams) {
         throw error
         
     }
-
-
     
 }
+
 export async function updateUser(params:UpdateUserParams) {
 
-     
     try {
+          ConnectToDatabase();
 
-        ConnectToDatabase()
+          const {clerkId,updateData,path} = params
 
-        const {clerkId,updateData,path} = params
-  
-        await User.findByIdAndUpdate({clerkId},updateData,{new:true})
+          console.log({clerkId})
 
-        revalidatePath(path)
+          await User.findOneAndUpdate({clerkId},updateData,{new:true})
+
+       revalidatePath(path)
     } catch (error) {
         console.log(error)
         throw error
         
     }
-
-
     
 }
 export async function deleteUser(params:DeleteUserParams) {
@@ -88,7 +88,7 @@ export async function deleteUser(params:DeleteUserParams) {
 
 
 
-        const deleteUser = await User.findByIdAndDelete({_id:user._id})
+        const deleteUser = await User.findByIdAndDelete(user._id)
 
      return deleteUser
         
