@@ -2,26 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+
+*{
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+body{
+  font-family: 'Roboto';
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@layer utilities {
+
+.flexcenter{
+  @apply flex items-center justify-center
+}
+.h1{
+  @apply text-[45px] leading-[15px] font-bold
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.primary-gradient {
+  background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+}
+
 }
