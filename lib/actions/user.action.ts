@@ -7,11 +7,11 @@ import { ConnectToDatabase } from "../mongoose"
 import { CreateUserParams, DeleteUserParams, GetUserByIdParams, UpdateUserParams } from "./shared.type"
 import Pizza from "@/database/pizza.mode"
 import { revalidatePath } from "next/cache"
+import Category from "@/database/category.model"
 
 
 export async function getUserById(params:GetUserByIdParams) {
 
-     
     try {
 
         ConnectToDatabase()
@@ -24,15 +24,13 @@ export async function getUserById(params:GetUserByIdParams) {
     } catch (error) {
         console.log(error)
         throw error
-        
-    }
+         }
+        }
 
 
-    
-}
-export async function createUser(DataUser:CreateUserParams) {
 
-     
+ export async function createUser(DataUser:CreateUserParams) {
+
     try {
 
         ConnectToDatabase()
@@ -45,9 +43,8 @@ export async function createUser(DataUser:CreateUserParams) {
         console.log(error)
         throw error
         
-    }
-    
-}
+    }}
+
 
 export async function updateUser(params:UpdateUserParams) {
 
@@ -56,9 +53,10 @@ export async function updateUser(params:UpdateUserParams) {
 
           const {clerkId,updateData,path} = params
 
-          console.log({clerkId})
 
-          await User.findOneAndUpdate({clerkId},updateData,{new:true})
+       await User.findOneAndUpdate({clerkId},updateData,{new:true})
+        
+      
 
        revalidatePath(path)
     } catch (error) {
@@ -68,6 +66,7 @@ export async function updateUser(params:UpdateUserParams) {
     }
     
 }
+
 export async function deleteUser(params:DeleteUserParams) {
 
      
@@ -85,7 +84,7 @@ export async function deleteUser(params:DeleteUserParams) {
       }
 
         await Pizza.deleteMany({author:user._id})
-
+        await Category.deleteMany({author:user._id})
 
 
         const deleteUser = await User.findByIdAndDelete(user._id)

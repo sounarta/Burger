@@ -1,13 +1,16 @@
+"use client";
+
 import { navLinks } from "@/constants";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-
+import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 const Navbar = () => {
+  const { userId } = useAuth();
+
   return (
     <nav className=" flex w-full items-center  justify-between gap-5 py-8">
-      <div className=" flex flex-1  gap-10">
+      <div className=" flex flex-1 items-center  gap-10">
         <h1 className="h1 text-primary">ST Pizza</h1>
 
         {navLinks.map((item) => (
@@ -21,10 +24,20 @@ const Navbar = () => {
             </p>
           </Link>
         ))}
+        {userId && (
+          <Link href={`/profile/${userId}`} className=" relative">
+            <Image
+              src="/profile.svg"
+              alt=""
+              width={18}
+              height={18}
+              className=" relative -bottom-0 right-4 hidden object-contain md:flex"
+            />
+          </Link>
+        )}
       </div>
-       
- 
-    <SignedIn>
+
+      <SignedIn>
         <UserButton
           afterSignOutUrl="/"
           appearance={{
@@ -54,8 +67,7 @@ const Navbar = () => {
           height={25}
           className=" object-contain"
         />
-        </Link>
-     
+      </Link>
     </nav>
   );
 };
