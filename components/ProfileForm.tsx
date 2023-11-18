@@ -49,7 +49,7 @@ const ProfileForm = ({ mongoUser, clerkId }: Props) => {
   };
   
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Event object:', e);
+
     const file = e.target.files?.[0];
     
     if (file) {

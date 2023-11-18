@@ -15,12 +15,9 @@ const CategoriesForm = ({ mongoUserId, Categories }: Props) => {
   const pathname = usePathname();
   const [isSubmit, setIsSubmit] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<{
-    _id: string;
-    name: string;
-  } | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<{ _id: string;name: string} | null>(null);
 
-  console.log(selectedCategory);
+ // console.log(selectedCategory);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

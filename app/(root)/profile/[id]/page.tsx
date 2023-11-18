@@ -10,7 +10,7 @@ interface Props {
   params: { id: string };
 }
 
-const admin:boolean =true
+// const admin:boolean =true
 
 const Page = async ({ params }: Props) => {
   const { userId } = auth();
@@ -19,9 +19,13 @@ const Page = async ({ params }: Props) => {
 
   const mongoUser = await getUserById({ userId: params.id });
 
+  const isAdmin = mongoUser.roles.includes('admin');
+
+
+
   return (
     <div className=" flexcenter flex-col  pt-10">
-      {admin ? (
+      {isAdmin ? (
        
          <ProfileTabs/>
       

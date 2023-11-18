@@ -76,7 +76,7 @@ if(eventType === 'user.created'){
 if(eventType === 'user.updated'){
 
     const{id,username,first_name,last_name,image_url,email_addresses} = evt.data
-    console.log({ id, username, first_name, last_name, image_url, email_addresses });
+  
 
     const mongoUser = await updateUser({
         clerkId:id,

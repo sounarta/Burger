@@ -1,23 +1,31 @@
-import { model,models,Document,Schema } from "mongoose";
+import { model, models, Document, Schema } from 'mongoose';
 
+const extraSchemaprice = new Schema({
+    name: String,
+    price: Number,
+});
 
-export interface Iuser extends Document{
-
-    title:string;
-    description:string;
-    author:Schema.Types.ObjectId;
-    price:number;
-    image:string;
-    createdAt:Date
-
+export interface IPizza extends Document {
+    title: string;
+    description: string;
+    author: Schema.Types.ObjectId;
+    price: number;
+    image: string;
+    addsize: {
+        name: string;
+        price: number;
+    }[];
+    extraIngredients: {
+        name: string;
+        price: number;
+    }[];
+    createdAt: Date;
 }
+
 
 const PizzaSchema = new Schema({
 
-    title: {
-        type: String,
-        required: true,
-    },
+    title: {type: String,required: true},
     description: {
         type: String,
         required: true,
@@ -35,13 +43,18 @@ const PizzaSchema = new Schema({
         type: String,
         required: true,
     },
+    addsize: {
+        type: [extraSchemaprice],
+    },
+    extraIngredients: {
+        type: [extraSchemaprice],
+    },
     createdAt: {
         type: Date,
         default: Date.now,
     },
-})
+});
 
-
-const Pizza= models.Pizza|| model('Pizza',PizzaSchema)
+const Pizza = models.Pizza || model('Pizza', PizzaSchema);
 
 export default Pizza

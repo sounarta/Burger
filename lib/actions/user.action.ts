@@ -7,7 +7,7 @@ import { ConnectToDatabase } from "../mongoose"
 import { CreateUserParams, DeleteUserParams, GetUserByIdParams, UpdateUserParams } from "./shared.type"
 import Pizza from "@/database/pizza.mode"
 import { revalidatePath } from "next/cache"
-import Category from "@/database/category.model"
+
 
 
 export async function getUserById(params:GetUserByIdParams) {
@@ -84,7 +84,7 @@ export async function deleteUser(params:DeleteUserParams) {
       }
 
         await Pizza.deleteMany({author:user._id})
-        await Category.deleteMany({author:user._id})
+      
 
 
         const deleteUser = await User.findByIdAndDelete(user._id)
@@ -100,3 +100,16 @@ export async function deleteUser(params:DeleteUserParams) {
 
     
 }
+
+
+export async function setAdminPrivileges(userId: string) {
+    try {
+      ConnectToDatabase();
+  
+      // Find and update the user by ID to add the admin role
+      await User.findByIdAndUpdate(userId, { $addToSet: { roles: 'admin' } });
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }

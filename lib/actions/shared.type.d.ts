@@ -35,3 +35,25 @@ export interface CreateUserParams {
     name:string;
     path:string
   }
+
+  export interface CreateMenuParams{
+    title:string;
+    description:string;
+    price:number;
+    path:string;
+    author:string;
+    image:string | null
+  }
+
+  export interface GetMenuItemByIdParams {
+    menuItemId:string
+  }
+
+  export interface EditMenuParams{
+    menuItemId:string;
+    title:string;
+    description:string;
+    price:number;
+    path:string;
+    image?:string | null
+  }
