@@ -19,6 +19,7 @@ export interface IPizza extends Document {
         name: string;
         price: number;
     }[];
+    category:Schema.Types.ObjectId,
     createdAt: Date;
 }
 
@@ -49,6 +50,7 @@ const PizzaSchema = new Schema({
     extraIngredients: {
         type: [extraSchemaprice],
     },
+    category:{type:Schema.Types.ObjectId,ref:'Category'},
     createdAt: {
         type: Date,
         default: Date.now,

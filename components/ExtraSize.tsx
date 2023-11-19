@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Image from "next/image";
 
 interface Props {
   prop: {
@@ -7,16 +7,18 @@ interface Props {
     price: number;
   }[];
 
-  setProp: React.Dispatch<React.SetStateAction<{ name: string; price: number }[]>>;
-  type:string
+  setProp: React.Dispatch<
+    React.SetStateAction<{ name: string; price: number }[]>
+  >;
+  type: string;
 }
 
-const ExtraSize = ({ prop, setProp,type }: Props) => {
+const ExtraSize = ({ prop, setProp, type }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   function addMenu() {
     setProp((prevSizes) => {
-      return [...prevSizes, { name: '', price: 0 }];
+      return [...prevSizes, { name: "", price: 0 }];
     });
   }
 
@@ -35,7 +37,7 @@ const ExtraSize = ({ prop, setProp,type }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         {isOpen ? (
           <Image
             src="/chevrondown.svg"
@@ -56,7 +58,9 @@ const ExtraSize = ({ prop, setProp,type }: Props) => {
           />
         )}
 
-        <h1 className="text-[15px] font-bold">{type}</h1>
+        <h1 className="gap-3 text-[15px] font-bold">
+          {type} ({prop.length}){" "}
+        </h1>
       </div>
       {isOpen && (
         <div className="flex h-fit w-full flex-col justify-between rounded-md bg-slate-200 p-3">
@@ -72,7 +76,9 @@ const ExtraSize = ({ prop, setProp,type }: Props) => {
                         placeholder="Size name"
                         className="max-w-[150px] rounded-lg px-2"
                         value={item.name}
-                        onChange={(e) => editSize(index, 'name', e.target.value)}
+                        onChange={(e) =>
+                          editSize(index, "name", e.target.value)
+                        }
                       />
                     </div>
                     <div>
@@ -82,7 +88,9 @@ const ExtraSize = ({ prop, setProp,type }: Props) => {
                         placeholder="Extra price"
                         className="max-w-[150px] rounded-lg px-2"
                         value={item.price}
-                        onChange={(e) => editSize(index, 'price', e.target.value)}
+                        onChange={(e) =>
+                          editSize(index, "price", e.target.value)
+                        }
                       />
                     </div>
 

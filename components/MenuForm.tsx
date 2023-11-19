@@ -1,6 +1,6 @@
 "use client";
 
-import { createMenu, editMenu } from "@/lib/actions/pizza.action";
+import { createMenu, editMenu, removeMenuItem } from "@/lib/actions/pizza.action";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -25,9 +25,12 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
   const [picture, setPicture] = useState(ParsedMenuItemId?.image || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
- 
-  const [addSize, setAddSize] = useState<{ name: string; price: number }[]>([]);
-  const [extraIngredients, setExtraIngredients] = useState<{ name: string; price: number }[]>([]);
+  const [addSize, setAddSize] = useState<{ name: string; price: number }[]>(
+    ParsedMenuItemId?.addsize || []
+  );
+  const [extraIngredients, setExtraIngredients] = useState<
+    { name: string; price: number }[]
+  >(ParsedMenuItemId?.extraIngredients || []);
 
   console.log(addSize);
 
@@ -45,6 +48,8 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
           image: selectedFile
             ? await convertFileToBase64(selectedFile)
             : ParsedMenuItemId?.image,
+          addsize: addSize,
+          extraIngredients,
           path: pathname,
         });
         router.back();
@@ -55,6 +60,8 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
           author: JSON.parse(mongoUserId),
           price: parseFloat(price),
           image: selectedFile && (await convertFileToBase64(selectedFile)),
+          addsize: addSize,
+          extraIngredients,
           path: pathname,
         });
         router.back();
@@ -98,6 +105,20 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
     }
   };
 
+ const removeMenu = async(menuItemId:string | undefined )=>{
+
+
+  if (menuItemId !== undefined) {
+    await removeMenuItem({
+      menuId:JSON.parse(menuItemId),
+      path:pathname
+    })
+  
+    router.push('/menu-items')
+  }
+    
+
+ }
 
 
   return (
@@ -195,8 +216,12 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
         </div>
 
         <div className=" mt-3 flex flex-col gap-4">
-          <ExtraSize type="Size"  prop={addSize} setProp={setAddSize}/>
-          <ExtraSize type="extra Ingredients"  prop={extraIngredients} setProp={setExtraIngredients}/>
+          <ExtraSize type="Size" prop={addSize} setProp={setAddSize} />
+          <ExtraSize
+            type="extra Ingredients"
+            prop={extraIngredients}
+            setProp={setExtraIngredients}
+          />
         </div>
 
         <button
@@ -208,6 +233,14 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
           ) : (
             <>{type === "edit" ? "Edit Menu" : "Save Menu"}</>
           )}
+        </button>
+        <button
+          type="button"
+          className=" mt-5 rounded-lg bg-primary px-3 py-2 font-serif text-white"
+          onClick={()=>removeMenu(menuItemId)}
+        >
+          {" "}
+          Delete this Menu
         </button>
       </div>
     </form>

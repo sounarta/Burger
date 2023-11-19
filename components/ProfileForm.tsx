@@ -92,6 +92,7 @@ const ProfileForm = ({ mongoUser, clerkId }: Props) => {
       toast.error("Error updating profile. Please try again.");
     } finally {
       setSubmit(false);
+     
     }
   };
   return (

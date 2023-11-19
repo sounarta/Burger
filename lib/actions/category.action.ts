@@ -2,7 +2,7 @@
 
 import Category from "@/database/category.model"
 import { ConnectToDatabase } from "../mongoose"
-import { CreateCategoryParams, EditCategoryParams } from "./shared.type"
+import { CreateCategoryParams, EditCategoryParams, RemoveCategoryParams } from "./shared.type"
 import { revalidatePath } from "next/cache";
 
 
@@ -71,3 +71,23 @@ revalidatePath(path)
     }
     
 }
+
+
+
+export async function removeCategory(params:RemoveCategoryParams) {
+
+    try {
+          await   ConnectToDatabase()
+                  const {id,path} = params
+
+         await Category.deleteOne({_id:id})
+
+revalidatePath(path)
+    } catch (error) {
+        console.log(error)
+        throw error
+        
+    }
+    
+}
+

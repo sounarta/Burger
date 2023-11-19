@@ -1,7 +1,8 @@
 "use client";
-import { createCategory, editCategory } from "@/lib/actions/category.action";
+import { createCategory, editCategory, removeCategory } from "@/lib/actions/category.action";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import toast from "react-hot-toast";
 interface Props {
   mongoUserId: string;
@@ -15,9 +16,9 @@ const CategoriesForm = ({ mongoUserId, Categories }: Props) => {
   const pathname = usePathname();
   const [isSubmit, setIsSubmit] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<{ _id: string;name: string} | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<{ _id: string; name: string } | null>(null);
 
- // console.log(selectedCategory);
+  // console.log(selectedCategory);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +56,17 @@ const CategoriesForm = ({ mongoUserId, Categories }: Props) => {
     setCategoryName(category.name);
   };
 
+  const handleRemove = async(id:string)=>{
+
+    await removeCategory ({
+      id,
+      path:pathname
+    })
+
+
+
+  }
+
   return (
     <form
       className=" my-10 flex max-w-[5xl] flex-col gap-1"
@@ -83,17 +95,22 @@ const CategoriesForm = ({ mongoUserId, Categories }: Props) => {
       </div>
 
       <div className=" mt-5 flex flex-col">
-        <h1 className=" text-[18px] font-semibold text-slate-500">CategoryList:</h1>
+        <h1 className=" text-[18px] font-semibold text-slate-500">
+          CategoryList:
+        </h1>
 
         {Categories && (
           <div className="mt-3 flex flex-col gap-3">
             {Categories.map((category) => (
               <div
                 key={category._id}
-                className="flex items-center gap-1 rounded-lg bg-slate-200 p-2 capitalize text-secondary"
-                onClick={() => handleSelectedCategory(category)}
+                className="flex w-full items-center justify-between gap-1 rounded-lg bg-slate-200 p-2 capitalize text-secondary"
               >
                 <span>{category.name}</span>
+                <div className=" flex gap-3">
+                  <Image src={"/trash.svg"} height={20} width={20} alt="" onClick={() => handleRemove(category._id)} className="cursor-pointer" />
+                  <Image src={"/edit.svg"} height={20} width={20} alt="" onClick={() => handleSelectedCategory(category)}className="cursor-pointer"  />
+                </div>
               </div>
             ))}
           </div>
