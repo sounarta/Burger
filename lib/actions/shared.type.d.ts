@@ -44,7 +44,8 @@ export interface CreateUserParams {
     author:string;
     image:string | null
     addsize: { name: string; price: number }[];
-  extraIngredients: { name: string; price: number }[];
+    extraIngredients: { name: string; price: number }[];
+    category:string
   }
 
   export interface GetMenuItemByIdParams {
@@ -59,7 +60,8 @@ export interface CreateUserParams {
     path:string;
     image?:string | null
     addsize: { name: string; price: number }[];
-  extraIngredients: { name: string; price: number }[];
+     extraIngredients: { name: string; price: number }[];
+  category:string
     
   }
 

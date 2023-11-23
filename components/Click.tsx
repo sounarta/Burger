@@ -1,6 +1,10 @@
+'use client'
+
+
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+
 
 interface Props {
   title: string;
@@ -11,9 +15,12 @@ interface Props {
 }
 
 const Click = ({ title, icon, otherClasses, imageCLass,price }: Props) => {
+
+
+
   return (
     
-      <Button className={`${otherClasses}flex items-center gap-1 text-lg`}>
+      <Button className={`${otherClasses}flex items-center gap-1 text-lg`} >
         
         {title} {price && (`$${price}`)}
 

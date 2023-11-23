@@ -12,7 +12,7 @@ export async function createMenu(params:CreateMenuParams) {
           await ConnectToDatabase()
          
 
-          const{title,description,price,image,author,addsize,extraIngredients,path} = params
+          const{title,description,price,image,author,addsize,extraIngredients,category,path} = params
 
 
           await Pizza.create({
@@ -22,7 +22,8 @@ export async function createMenu(params:CreateMenuParams) {
           image,
           addsize,
           extraIngredients,
-          author
+          author,
+          category
           
  
           })
@@ -71,10 +72,13 @@ export async function getMenuItems(params:any) {
     try {
             await ConnectToDatabase()
            
-            const{menuItemId,title,description,price,image,addsize,extraIngredients,path} = params
-           
+            const{menuItemId,title,description,price,image,addsize,extraIngredients,category,path} = params
+
+           console.log(category)
           const menuItemUpdate =  await Pizza.findById(menuItemId)
           
+      
+
           if(!menuItemUpdate ){
             throw new Error('menuItemUpdate  not Found')
            }
@@ -93,6 +97,10 @@ export async function getMenuItems(params:any) {
       name: ingredient.name,
       price: ingredient.price,
     }));
+   
+    menuItemUpdate.category = category;
+
+
           
   await menuItemUpdate.save()
 

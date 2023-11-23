@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useState } from "react";
 import Image from "next/image";
@@ -9,7 +9,8 @@ import toast from "react-hot-toast";
 
 interface Props {
   mongoUser: string;
-  clerkId: string;
+  clerkId: string  ;
+  
 }
 
 const ProfileForm = ({ mongoUser, clerkId }: Props) => {
@@ -188,14 +189,17 @@ const ProfileForm = ({ mongoUser, clerkId }: Props) => {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-
+      
           <button
-            type="submit"
-            disabled={submit}
-            className=" w-full  rounded-lg bg-primary py-2 text-lg text-white"
-          >
-            {submit ? "Updating" : "Submit"}
-          </button>
+          type="submit"
+          disabled={submit}
+          className=" w-full  rounded-lg bg-primary py-2 text-lg text-white"
+        >
+          {submit ? "Updating" : "Save"}
+        </button>
+
+       
+      
         </div>
       </div>
     </form>

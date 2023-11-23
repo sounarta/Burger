@@ -18,7 +18,7 @@ export async function getUserById(params:GetUserByIdParams) {
         const {userId} = params
       
         const user = await User.findOne({clerkId:userId})
-
+       console.log('User me',user) 
         return user
         
     } catch (error) {
@@ -102,14 +102,43 @@ export async function deleteUser(params:DeleteUserParams) {
 }
 
 
-export async function setAdminPrivileges(userId: string) {
+
+export async function getUsers(params:any) {
+
     try {
-      ConnectToDatabase();
-  
-      // Find and update the user by ID to add the admin role
-      await User.findByIdAndUpdate(userId, { $addToSet: { roles: 'admin' } });
+
+        ConnectToDatabase()
+      
+        const users = await User.find({})
+
+        return {users}
+        
     } catch (error) {
-      console.error(error);
-      throw error;
+        console.log(error)
+        throw error
+         }
+        }
+
+
+        export async function getUserInfo(params:GetUserByIdParams) {
+
+            try {
+              ConnectToDatabase();
+    
+              const {userId} = params
+    
+              const user = await User.findOne({clerkId:userId})
+              
+    
+        if(!user){
+          throw new Error('User not Found')
+        }
+
+
+        return user
     }
-  }
+    catch (error) {
+        console.log(error)
+        throw error
+         }
+        }

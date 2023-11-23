@@ -1,6 +1,10 @@
 "use client";
 
-import { createMenu, editMenu, removeMenuItem } from "@/lib/actions/pizza.action";
+import {
+  createMenu,
+  editMenu,
+  removeMenuItem,
+} from "@/lib/actions/pizza.action";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -9,9 +13,13 @@ interface Props {
   mongoUserId: string;
   menuItemId?: string;
   type?: string;
+  categories: {
+    _id: string;
+    name: string;
+  }[];
 }
 
-const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
+const MenuForm = ({ mongoUserId, menuItemId, type, categories }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const ParsedMenuItemId = menuItemId && JSON.parse(menuItemId || "");
@@ -28,11 +36,10 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
   const [addSize, setAddSize] = useState<{ name: string; price: number }[]>(
     ParsedMenuItemId?.addsize || []
   );
-  const [extraIngredients, setExtraIngredients] = useState<
-    { name: string; price: number }[]
-  >(ParsedMenuItemId?.extraIngredients || []);
-
-  console.log(addSize);
+  const [extraIngredients, setExtraIngredients] = useState<{ name: string; price: number }[]>(ParsedMenuItemId?.extraIngredients || []);
+  const [category, setCategory] = useState(ParsedMenuItemId?.category || '');
+  console.log('category',category);
+  // console.log(addSize);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +57,7 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
             : ParsedMenuItemId?.image,
           addsize: addSize,
           extraIngredients,
+          category,
           path: pathname,
         });
         router.back();
@@ -62,6 +70,7 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
           image: selectedFile && (await convertFileToBase64(selectedFile)),
           addsize: addSize,
           extraIngredients,
+          category,
           path: pathname,
         });
         router.back();
@@ -105,21 +114,16 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
     }
   };
 
- const removeMenu = async(menuItemId:string | undefined )=>{
+  const removeMenu = async (menuItemId: string | undefined) => {
+    if (menuItemId !== undefined) {
+      await removeMenuItem({
+        menuId: JSON.parse(menuItemId),
+        path: pathname,
+      });
 
-
-  if (menuItemId !== undefined) {
-    await removeMenuItem({
-      menuId:JSON.parse(menuItemId),
-      path:pathname
-    })
-  
-    router.push('/menu-items')
-  }
-    
-
- }
-
+      router.push("/menu-items");
+    }
+  };
 
   return (
     <form className="mb-10 flex min-h-fit gap-3" onSubmit={handleSubmit}>
@@ -214,6 +218,20 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
+        <select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  className="my-2 rounded-lg bg-slate-100 px-2 py-1 font-serif capitalize outline-none"
+>
+  <option value="">Select a category</option>
+  {categories?.length > 0 &&
+    categories.map((c) => (
+      <option key={c._id} value={c._id}>
+        {c.name}
+      </option>
+    ))}
+</select>
+
 
         <div className=" mt-3 flex flex-col gap-4">
           <ExtraSize type="Size" prop={addSize} setProp={setAddSize} />
@@ -237,7 +255,7 @@ const MenuForm = ({ mongoUserId, menuItemId, type }: Props) => {
         <button
           type="button"
           className=" mt-5 rounded-lg bg-primary px-3 py-2 font-serif text-white"
-          onClick={()=>removeMenu(menuItemId)}
+          onClick={() => removeMenu(menuItemId)}
         >
           {" "}
           Delete this Menu

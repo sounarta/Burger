@@ -27,10 +27,10 @@ const ExtraSize = ({ prop, setProp, type }: Props) => {
     setProp(newList);
   };
 
-  const editSize = (index: number, prop: string, value: string | number) => {
+  const editSize = (index: number, type: string, value: string | number) => {
     setProp((prevSizes) => {
       const newSizes = [...prevSizes];
-      newSizes[index] = { ...newSizes[index], [prop]: value };
+      newSizes[index] = { ...newSizes[index], [type]: value };
       return newSizes;
     });
   };

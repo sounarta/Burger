@@ -3,6 +3,7 @@ import React from 'react'
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
+import { AppProvider } from '@/context/AppProvider'
 const roboto = Roboto({ 
   subsets: ['latin'],
   weight:['100','300','400','500','700','900'],
@@ -33,7 +34,13 @@ export default function RootLayout({
           }
         }} 
        >
+        <AppProvider>
         {children}
+
+        </AppProvider>
+        
+        
+       
 
 
         </ClerkProvider>

@@ -2,8 +2,9 @@ import React from "react";
 import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
 import PizzaCard from "@/components/PizzaCard";
+import { getMenuItems } from "@/lib/actions/pizza.action";
 
-const Pizza = [
+/* const Pizza = [
   {
     _id: "1",
     title: "Pepperoni",
@@ -25,8 +26,14 @@ const Pizza = [
     createdAt: new Date(),
   },
 ];
+*/
+const Home = async() => {
 
-const Home = () => {
+
+ const result = await getMenuItems({})
+
+ // console.log(result.menuItems)
+
   return (
     <div className=" flex flex-col gap-3">
       <HeroSection />
@@ -56,7 +63,7 @@ const Home = () => {
       </div>
 
       <div className=" mt-10 flex flex-wrap items-center justify-center gap-5">
-        {Pizza.map((item) => (
+        {result.menuItems.map((item) => (
           <PizzaCard
             key={item._id}
             _id={item._id}
@@ -64,11 +71,13 @@ const Home = () => {
             description={item.description}
             image={item.image}
             price={item.price}
+            addsize={item.addsize}  // Make sure you are passing addsize correctly
+            extraIngredients={item.extraIngredients}
           />
         ))}
       </div>
 
-      <div className=" flexcenter mt-10 flex-col ">
+      <div className=" flexcenter mt-10 flex-col " id="about">
         <h1 className=" text-[20px] text-secondary">OUR STORY</h1>
         <h1 className="font-serif text-[30px] leading-10 text-primary">
           About Us
@@ -80,7 +89,7 @@ const Home = () => {
           fuga dicta, maiores voluptas sequi autem facilis iure eius eum!
         </p>
       </div>
-      <div className=" flexcenter h-[300px] w-full flex-col bg-white/60">
+      <div className=" flexcenter h-[300px] w-full flex-col bg-white/60" id="contact">
           <h1 className=" text-center text-[20px] text-secondary">
             Dont Hesitate
           </h1>

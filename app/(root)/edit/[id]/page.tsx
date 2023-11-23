@@ -9,9 +9,14 @@ interface Props {
 }
 
 const Page = async ({ params }: Props) => {
-  const {userId} = auth();
-  if(!userId) return null
-  const userInfo = await getUserInfo({ userId: params.id });
+  const {userId:clerkId} = auth();
+  let userInfo
+
+  if(clerkId){
+   userInfo = await getUserInfo({ userId: params.id});
+
+  }
+
 
   const isAdmin = userInfo.roles.includes("admin");
 
@@ -22,8 +27,8 @@ const Page = async ({ params }: Props) => {
       ) : (
         <h1 className=" h1 mb-10 text-primary">Profile</h1>
       )}
-
-      <ProfileForm clerkId={userId} mongoUser={JSON.stringify(userInfo)}  />
+    
+      <ProfileForm clerkId={userInfo.clerkId} mongoUser={JSON.stringify(userInfo)}  />
     </div>
   );
 };
